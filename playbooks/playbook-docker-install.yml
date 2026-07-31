@@ -1,0 +1,8 @@
+---
+- name: Install Docker Engine
+  hosts: "{{ target_host }}"
+  become: true
+  gather_facts: true
+
+  roles:
+    - docker-install
