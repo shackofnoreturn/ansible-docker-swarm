@@ -22,8 +22,7 @@ docker_packages:
 # Users added to docker group
 ####################################################
 
-docker_users:
-  - shackadmin
+docker_users: []
 
 
 ####################################################
