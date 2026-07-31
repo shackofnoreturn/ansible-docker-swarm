@@ -11,5 +11,4 @@
       https://download.docker.com/linux/{{ ansible_distribution | lower }}
       {{ ansible_distribution_release }}
       {{ docker_install_channel }}
-    filename: docker
     state: present
