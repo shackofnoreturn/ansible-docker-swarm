@@ -1,0 +1,9 @@
+---
+- name: Verify supported OS
+  ansible.builtin.assert:
+
+    that:
+
+      - ansible_os_family == "Debian"
+
+    fail_msg: "Only Debian/Ubuntu is currently supported."
