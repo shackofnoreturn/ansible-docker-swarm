@@ -1,8 +1,8 @@
 ---
 - name: Install Docker
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ docker_packages }}"
-    state: latest
+    state: present
     update_cache: true
 
 - name: Enable Docker
