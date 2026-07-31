@@ -1,6 +1,6 @@
 ---
 - name: Remove legacy Docker packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - docker
       - docker-engine
@@ -12,11 +12,13 @@
   when: docker_remove_old_packages
 
 - name: Install prerequisites
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - ca-certificates
       - curl
       - gnupg
       - lsb-release
+      - python3-jsondiff
+      - python3-yaml
     state: present
     update_cache: true
