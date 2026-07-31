@@ -1,0 +1,26 @@
+---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Verify Docker service
+  ansible.builtin.assert:
+
+    that:
+
+      - "'docker.service' in ansible_facts.services"
+
+      - ansible_facts.services['docker.service'].state == "running"
+
+- name: Get Docker version
+  ansible.builtin.command:
+
+    cmd: docker version
+
+  register: docker_version
+
+  changed_when: false
+
+- name: Display Docker version
+  ansible.builtin.debug:
+
+    var: docker_version.stdout_lines
