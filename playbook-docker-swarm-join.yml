@@ -1,0 +1,7 @@
+---
+- name: Join Docker Swarm
+  hosts: all
+  become: true
+
+  roles:
+    - docker-swarm-join

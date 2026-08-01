@@ -1,0 +1,4 @@
+---
+docker_swarm_manager_ip: ""
+docker_swarm_join_token: ""
+docker_swarm_advertise_addr: ""
