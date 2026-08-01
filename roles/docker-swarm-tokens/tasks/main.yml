@@ -1,0 +1,29 @@
+---
+- name: Verify this node is a swarm manager
+  ansible.builtin.command:
+    cmd: docker info --format '{{ "{{.Swarm.ControlAvailable}}" }}'
+  register: swarm_manager
+  changed_when: false
+
+- name: Fail if node is not a manager
+  ansible.builtin.fail:
+    msg: "This node is not a Docker Swarm manager."
+  when: swarm_manager.stdout != "true"
+
+- name: Get worker join token
+  ansible.builtin.command:
+    cmd: docker swarm join-token -q worker
+  register: worker_token
+  changed_when: false
+
+- name: Get manager join token
+  ansible.builtin.command:
+    cmd: docker swarm join-token -q manager
+  register: manager_token
+  changed_when: false
+
+- name: Display join tokens
+  ansible.builtin.debug:
+    msg:
+      - "Worker Token : {{ worker_token.stdout }}"
+      - "Manager Token: {{ manager_token.stdout }}"

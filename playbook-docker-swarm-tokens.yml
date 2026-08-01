@@ -1,0 +1,8 @@
+---
+- name: Display Docker Swarm Join Tokens
+  hosts: all
+  become: true
+  gather_facts: false
+
+  roles:
+    - docker-swarm-tokens
