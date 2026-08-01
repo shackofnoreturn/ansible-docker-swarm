@@ -1,6 +1,6 @@
 ---
 - name: Display Docker Swarm Join Tokens
-  hosts: all
+  hosts: "{{ target_host }}"
   become: true
   gather_facts: false
 

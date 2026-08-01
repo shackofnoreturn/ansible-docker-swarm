@@ -1,6 +1,6 @@
 ---
 - name: Join Docker Swarm
-  hosts: all
+  hosts: "{{ target_host }}"
   become: true
 
   roles:
