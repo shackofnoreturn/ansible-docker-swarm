@@ -15,13 +15,14 @@
       No swarm managers found for environment {{ docker_swarm_environment }}
 
 
-- name: Check manager availability
-  ansible.builtin.wait_for_connection:
-    timeout: 5
+- name: Check which hosts are swarm managers
+  ansible.builtin.command:
+    cmd: docker info --format '{{ "{{.Swarm.ControlAvailable}}" }}'
   delegate_to: "{{ item }}"
-  loop: "{{ docker_swarm_managers }}"
+  loop: "{{ docker_swarm_candidates }}"
   register: manager_checks
   ignore_errors: true
+  changed_when: false
   run_once: true
 
 
@@ -41,3 +42,7 @@
       - docker_swarm_manager is defined
     fail_msg: >
       No reachable swarm manager found in {{ docker_swarm_environment }}
+
+- name: Show selected manager
+  ansible.builtin.debug:
+    msg: "Using swarm manager {{ docker_swarm_manager }}"
