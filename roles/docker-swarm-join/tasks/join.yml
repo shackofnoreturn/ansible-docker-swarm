@@ -11,15 +11,23 @@
   register: docker_swarm_state
   changed_when: false
 
+# - name: Join Docker swarm
+#   ansible.builtin.command:
+#     argv:
+#       - docker
+#       - swarm
+#       - join
+#       - --token
+#       - "{{ docker_swarm_join_token_result.stdout }}"
+#       - "{{ hostvars[docker_swarm_manager].ansible_host }}:2377"
+#   when:
+#     - docker_swarm_state.stdout != "active"
 
-- name: Join Docker swarm
-  ansible.builtin.command:
-    argv:
-      - docker
-      - swarm
-      - join
-      - --token
-      - "{{ docker_swarm_join_token_result.stdout }}"
-      - "{{ hostvars[docker_swarm_manager].ansible_host }}:2377"
+- name: Join Other Managers
+  community.docker.docker_swarm:
+    state: join
+    join_token: "{{ docker_swarm_join_token_result.stdout }}"
+    advertise_addr: "{{ ansible_host }}"
+    remote_addrs: "{{ hostvars[docker_swarm_manager].ansible_host }}"
   when:
     - docker_swarm_state.stdout != "active"
