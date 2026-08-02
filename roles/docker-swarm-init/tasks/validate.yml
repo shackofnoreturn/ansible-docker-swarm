@@ -1,0 +1,14 @@
+---
+- name: Verify this host is marked for swarm bootstrap
+  ansible.builtin.assert:
+    that:
+      - docker_swarm_bootstrap | default(false) | bool
+    fail_msg: >
+      {{ inventory_hostname }} is not marked as a Docker swarm bootstrap node.
+
+
+- name: Check current swarm state
+  ansible.builtin.command:
+    cmd: docker info --format '{{ "{{.Swarm.LocalNodeState}}" }}'
+  register: docker_swarm_state
+  changed_when: false

@@ -1,0 +1,14 @@
+---
+- name: Get swarm information
+  ansible.builtin.command:
+    cmd: docker info --format '{{ "{{.Swarm.LocalNodeState}}" }}'
+  register: docker_swarm_state_after
+  changed_when: false
+
+
+- name: Display swarm status
+  ansible.builtin.debug:
+    msg:
+      - "Host: {{ inventory_hostname }}"
+      - "Swarm state: {{ docker_swarm_state_after.stdout }}"
+      - "Advertise address: {{ docker_swarm_advertise_addr }}"

@@ -1,0 +1,2 @@
+---
+docker_swarm_advertise_addr: "{{ ansible_host }}"

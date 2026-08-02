@@ -1,0 +1,8 @@
+---
+- name: Initialize Docker Swarms
+  hosts: "{{ target_environment }}"
+  become: true
+  gather_facts: false
+
+  roles:
+    - docker-swarm-init
