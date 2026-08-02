@@ -1,0 +1,6 @@
+---
+- name: Validate swarm role
+  ansible.builtin.assert:
+    that:
+      - docker_swarm_role in ['worker', 'manager']
+    fail_msg: "docker_swarm_role must be either 'worker' or 'manager'."

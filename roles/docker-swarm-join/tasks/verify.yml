@@ -1,0 +1,8 @@
+---
+- name: Display swarm join information
+  ansible.builtin.debug:
+    msg:
+      Environment: "{{ docker_swarm_environment }}"
+      Manager: "{{ docker_swarm_manager }}"
+      Manager IP: "{{ hostvars[docker_swarm_manager].ansible_host }}"
+      Joined as: "{{ docker_swarm_role }}"

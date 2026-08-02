@@ -1,0 +1,25 @@
+---
+- name: Ensure Docker is running
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Check current swarm state
+  ansible.builtin.command:
+    cmd: docker info --format '{{ "{{.Swarm.LocalNodeState}}" }}'
+  register: docker_swarm_state
+  changed_when: false
+
+
+- name: Join Docker swarm
+  ansible.builtin.command:
+    argv:
+      - docker
+      - swarm
+      - join
+      - --token
+      - "{{ docker_swarm_join_token_result.stdout }}"
+      - "{{ hostvars[docker_swarm_manager].ansible_host }}:2377"
+  when:
+    - docker_swarm_state.stdout != "active"

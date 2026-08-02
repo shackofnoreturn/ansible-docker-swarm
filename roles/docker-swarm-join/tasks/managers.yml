@@ -1,0 +1,43 @@
+---
+- name: Find managers in environment
+  ansible.builtin.set_fact:
+    docker_swarm_managers: >-
+      {{
+        groups[docker_swarm_environment]
+        | intersect(groups['managers'])
+      }}
+
+- name: Verify managers exist
+  ansible.builtin.assert:
+    that:
+      - docker_swarm_managers | length > 0
+    fail_msg: >
+      No swarm managers found for environment {{ docker_swarm_environment }}
+
+
+- name: Check manager availability
+  ansible.builtin.wait_for_connection:
+    timeout: 5
+  delegate_to: "{{ item }}"
+  loop: "{{ docker_swarm_managers }}"
+  register: manager_checks
+  ignore_errors: true
+  run_once: true
+
+
+- name: Select first reachable manager
+  ansible.builtin.set_fact:
+    docker_swarm_manager: "{{ item.item }}"
+  when:
+    - docker_swarm_manager is not defined
+    - item.failed is not defined or not item.failed
+  loop: "{{ manager_checks.results }}"
+  run_once: true
+
+
+- name: Verify reachable manager exists
+  ansible.builtin.assert:
+    that:
+      - docker_swarm_manager is defined
+    fail_msg: >
+      No reachable swarm manager found in {{ docker_swarm_environment }}

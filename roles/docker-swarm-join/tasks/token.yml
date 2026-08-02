@@ -1,0 +1,19 @@
+---
+- name: Get worker join token
+  ansible.builtin.command:
+    cmd: docker swarm join-token -q worker
+  delegate_to: "{{ docker_swarm_manager }}"
+  register: docker_swarm_join_token_result
+  changed_when: false
+  when:
+    - docker_swarm_role == "worker"
+
+
+- name: Get manager join token
+  ansible.builtin.command:
+    cmd: docker swarm join-token -q manager
+  delegate_to: "{{ docker_swarm_manager }}"
+  register: docker_swarm_join_token_result
+  changed_when: false
+  when:
+    - docker_swarm_role == "manager"
