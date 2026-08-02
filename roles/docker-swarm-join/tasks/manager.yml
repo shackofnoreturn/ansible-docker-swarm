@@ -19,7 +19,7 @@
   ansible.builtin.command:
     cmd: docker info --format '{{ "{{.Swarm.ControlAvailable}}" }}'
   delegate_to: "{{ item }}"
-  loop: "{{ docker_swarm_candidates }}"
+  loop: "{{ docker_swarm_managers }}"
   register: manager_checks
   ignore_errors: true
   changed_when: false
