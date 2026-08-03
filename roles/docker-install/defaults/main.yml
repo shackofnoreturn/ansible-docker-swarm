@@ -43,7 +43,7 @@ docker_daemon:
   log-opts:
     max-size: "10m"
     max-file: "5"
-  live-restore: true
+  live-restore: false
 
 
 ####################################################
